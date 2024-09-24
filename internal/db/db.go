@@ -1,14 +1,20 @@
 package db
 
 import (
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
 	"osamikoin/internal/hashing"
 	"osamikoin/internal/models"
 )
 
-type DB struct{
+type DB struct {
 	*gorm.DB
+}
+
+func New() DB {
+	db, _ := gorm.Open(sqlite.Open("storage/main.db"))
+	return DB{db}
 }
 
 func (db *DB) SaveTransateToDB(t models.Transate) error {
@@ -27,4 +33,24 @@ func (db *DB) SaveTransateToDB(t models.Transate) error {
 		return res.Error
 	}
 	return nil
+}
+func (db *DB) GetProf(username string) (models.Profile, error) {
+	var prof models.Profile
+	res := db.Where("username = ?", username).Find(&prof)
+	if res.Error != nil {
+		return prof, res.Error
+	}
+	return prof, nil
+}
+func ChekProfile(prof models.Profile, count int) (int, string, error) {
+	db := New()
+	var err error
+	prof, err = db.GetProf(prof.Username)
+	if err != nil {
+		return 0,"",err
+	}
+	if prof.Money < count {
+		return prof.Money,"litle", nil
+	}
+	return prof.Money, "succes", nil
 }

@@ -13,4 +13,5 @@ type Transate struct{
 type Profile struct{
 	Username string
 	Password string
+	Money int
 }
