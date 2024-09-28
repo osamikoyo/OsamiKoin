@@ -1,4 +1,4 @@
-package connect
+package server
 
 import (
 	"log/slog"
@@ -9,9 +9,9 @@ import (
 	"osamikoin/cmd/client/tool"
 )
 
-func Server(ch chan string, cher chan error) {
+func TCPserver(cher chan error, ch chan string) {
 	loger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	listner, err := net.Listen("tcp", "/client")
+	listner, err := net.Listen("tcp", "/conn")
 	if err != nil {
 		cher <- err
 	}
@@ -19,16 +19,14 @@ func Server(ch chan string, cher chan error) {
 
 	var wgs sync.WaitGroup
 
-
 	wgs.Add(1)
 	go tool.ConnectionRouting(ch, cher, listner, &wgs)
 
 	select {
-	case res := <- cher:
+	case res := <-cher:
 		loger.Error(res.Error())
-	case res := <- ch:
+	case res := <-ch:
 		loger.Info(res)
 		wgs.Wait()
 	}
-	
 }

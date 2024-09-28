@@ -11,6 +11,7 @@ type Transate struct{
 	Pre_hash string
 }
 type Profile struct{
+	Id string
 	Username string
 	Password string
 	Money int
