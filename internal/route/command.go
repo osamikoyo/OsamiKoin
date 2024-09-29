@@ -1,16 +1,22 @@
 package route
 
-import "osamikoin/internal/route/handler"
+import (
+	"strings"
+
+	"osamikoin/internal/route/handler"
+)
 
 func CommandRoute(ch chan string) {
 	res := <-ch
-	switch res{
+
+	arguments := strings.Split(res, " ")
+	switch arguments[0] {
 	case "register":
 		handler.RegisterCLI()
 	case "mysending":
-		
+		handler.GetSending(arguments[1])
 	case "send":
-		
+
 	}
 
-} 
+}

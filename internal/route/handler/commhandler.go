@@ -20,13 +20,29 @@ func RegisterCLI() error {
 		return res.Error
 	}
 
-	log.Println("Input password to ", prof.Username + "\n--->")
+	log.Println("Input password to ", prof.Username+"\n--->")
 	fmt.Scanln(&prof.Password)
-	
+
 	err := db.Register(prof)
 	if err != nil {
 		return err
 	}
 
+	return nil
+}
+func GetSending(username string) error {
+	var Transate []models.Transate
+
+	db := db.New()
+	if err := db.Where("id_from = ? OR id_to = ?", username, username).Find(&Transate).Error; err != nil {
+		return err
+	}
+	for i := 0; i < len(Transate); i++ {
+		fmt.Println("ID - ", Transate[i].ID)
+		fmt.Println("id_to - ", Transate[i].Id_to)
+		fmt.Println("id_from - ", Transate[i].Id_From)
+		fmt.Println("count - ", Transate[i].Count)
+		fmt.Println("date - ", Transate[i].Date)
+	}
 	return nil
 }
