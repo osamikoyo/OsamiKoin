@@ -1,8 +1,6 @@
 package api
 
 import (
-	"net/http"
-
 	"github.com/labstack/echo/v4"
 
 	"osamikoin/internal/db"
@@ -10,7 +8,7 @@ import (
 )
 
 func Home(c echo.Context) error {
-	return c.String(http.StatusOK, "test")
+	return c.File("public/src/index.html")
 }
 func Send(c echo.Context) error {
 	var transAction models.Transate

@@ -1,6 +1,7 @@
 package route
 
 import (
+	"strconv"
 	"strings"
 
 	"osamikoin/internal/route/handler"
@@ -16,7 +17,8 @@ func CommandRoute(ch chan string) {
 	case "mysending":
 		handler.GetSending(arguments[1])
 	case "send":
-
+		count,_ := strconv.Atoi(arguments[3]) 
+		handler.Send(arguments[1], arguments[2], count)
 	}
 
 }

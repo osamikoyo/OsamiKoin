@@ -46,3 +46,12 @@ func GetSending(username string) error {
 	}
 	return nil
 }
+func Send(id_from string, id_to string, count int) {
+	trans := models.Transate{
+		Id_From: id_from,
+		Id_to: id_to,
+		Count: count,
+	}
+	db := db.New()
+	db.AcrivateTransate(trans)			
+}
